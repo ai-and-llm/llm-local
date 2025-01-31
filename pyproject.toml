@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "llm-local"
+version = "0.1.0"
+description = ""
+authors = ["Maksym Stepanenko"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+transformers = "^4.48.2"
+accelerate = "^1.3.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+app = "llm_local.app:main"
