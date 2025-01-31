@@ -2,7 +2,7 @@ import os
 
 from dotenv import load_dotenv
 from huggingface_hub import login
-from llm_local import llama, phi
+from llm_local import llama
 
 
 def load_envs() -> None:

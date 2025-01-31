@@ -36,7 +36,6 @@ def chat(question: str) -> None:
 
 
 def classification(document: str) -> str:
-
     # https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct
     llm_model_name = "meta-llama/Meta-Llama-3.1-8B-Instruct"
 
@@ -45,7 +44,7 @@ def classification(document: str) -> str:
         model=llm_model_name,
         model_kwargs={"torch_dtype": torch.bfloat16},
         device_map="auto",
-        return_full_text=False, # Don't return prompt but only output text
+        return_full_text=False,  # Don't return prompt but only output text
     )
 
     prompt_template = f"""
@@ -65,7 +64,6 @@ def classification(document: str) -> str:
         max_new_tokens=256,
     )
 
-    review_label = outputs[0]['generated_text']
+    review_label = outputs[0]["generated_text"]
 
-    return "POSITIVE" if review_label == '1' else "NEGATIVE"
-
+    return "POSITIVE" if review_label == "1" else "NEGATIVE"
