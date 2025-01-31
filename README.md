@@ -21,6 +21,6 @@ poetry run mypy
 
 * Static code analyzer and formatter `ruff`
 ```bash
- poetry run ruff check
- poetry run ruff format
+poetry run ruff check
+poetry run ruff format
 ```
