@@ -33,3 +33,39 @@ def chat(question: str) -> None:
         max_new_tokens=256,
     )
     print(f"LLama response: ========> {outputs[0]['generated_text'][-1]['content']}")
+
+
+def classification(document: str) -> str:
+
+    # https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct
+    llm_model_name = "meta-llama/Meta-Llama-3.1-8B-Instruct"
+
+    generator = transformers.pipeline(
+        "text-generation",
+        model=llm_model_name,
+        model_kwargs={"torch_dtype": torch.bfloat16},
+        device_map="auto",
+        return_full_text=False, # Don't return prompt but only output text
+    )
+
+    prompt_template = f"""
+    Predict whether the following document is a positive or negative movie review:
+
+    ${document}
+
+    If it is positive return 1 and if it is negative return 0. Do not give any other answers.
+    """
+
+    prompt = [
+        {"role": "user", "content": f"{prompt_template}"},
+    ]
+
+    outputs = generator(
+        prompt,
+        max_new_tokens=256,
+    )
+
+    review_label = outputs[0]['generated_text']
+
+    return "POSITIVE" if review_label == '1' else "NEGATIVE"
+

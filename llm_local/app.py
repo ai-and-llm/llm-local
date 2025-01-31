@@ -14,11 +14,14 @@ def load_envs() -> None:
 def main() -> None:
     load_envs()
 
-    question = input("Make more human-readable: ")
+    movie_review = input("Input movie review: ")
 
-    llama.chat(question)
+    review_result = llama.classification(movie_review)
 
-    phi.chat(question)
+    print(f"Review: {review_result}")
+
+    # llama.chat(question)
+    # phi.chat(question)
 
 
 if __name__ == "__main__":
