@@ -13,9 +13,28 @@ huggingface-hub = "^0.28.1"
 python-dotenv = "^1.0.1"
 
 
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.14.1"
+ruff = "^0.9.4"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+files = "llm_local"
+ignore_missing_imports = true
+
+[tool.ruff]
+target = "."
+# Enable error (E), formatting (F), and import (I) checks
+select = ["E", "F", "I"]
+# Disable specific checks if needed
+#ignore = ["E501"]
+# Set maximum line length (optional)
+#line-length = 88
+# Automatically apply fixes where possible
+fix = true
 
 [tool.poetry.scripts]
 app = "llm_local.app:main"
