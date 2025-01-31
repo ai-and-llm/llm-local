@@ -7,8 +7,8 @@ def main() -> None:
     # Load model and tokenizer
     model = AutoModelForCausalLM.from_pretrained(
         llm_model_name,
-        # device_map="cuda",
-        # torch_dtype="auto",
+        device_map="auto",
+        torch_dtype="auto",
         trust_remote_code=True,
     )
     tokenizer = AutoTokenizer.from_pretrained(llm_model_name)
@@ -23,9 +23,11 @@ def main() -> None:
         do_sample=False
     )
 
+    text = "the Merge  button is not available for merge_requests/40 even taking into account that MR was properly approved. Can you merge mentioned MR?";
+
     # The prompt (user input / query)
     messages = [
-        {"role": "user", "content": "Rust vs Java comparison for writing backend systems."}
+        {"role": "user", "content": f"Rewrite the following text to make it more human-readable, clear, and concise. Avoid jargon and complex sentences. Focus on making the message easy to understand for a general audience. Text: {text}"},
     ]
 
     # Generate output
