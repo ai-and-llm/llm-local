@@ -8,7 +8,7 @@ from huggingface_hub import login
 
 def load_envs() -> None:
     load_dotenv()
-    hugging_face_token = os.getenv('HUGGINGFACE_TOKEN')
+    hugging_face_token = os.getenv("HUGGINGFACE_TOKEN")
     login(hugging_face_token)
 
 
@@ -24,9 +24,14 @@ def llama_chat(question: str) -> None:
     )
 
     messages = [
-        {"role": "system",
-         "content": "You are an advanced AI language model designed to improve the readability of text while preserving its meaning. Your goal is to rewrite the given input to make it clearer, more engaging, and more natural. Ensure that the tone is appropriate for the intended audience, sentence structures are fluid, and complex or awkward phrasing is simplified without losing key details"},
-        {"role": "user", "content": f"Here is the text that needs improvement: ${question}"},
+        {
+            "role": "system",
+            "content": "You are an advanced AI language model designed to improve the readability of text while preserving its meaning. Your goal is to rewrite the given input to make it clearer, more engaging, and more natural. Ensure that the tone is appropriate for the intended audience, sentence structures are fluid, and complex or awkward phrasing is simplified without losing key details",
+        },
+        {
+            "role": "user",
+            "content": f"Here is the text that needs improvement: ${question}",
+        },
     ]
 
     # messages = [
@@ -62,7 +67,7 @@ def phi_chat(question: str) -> None:
         tokenizer=tokenizer,
         return_full_text=False,  # Don't return prompt but only output text
         max_new_tokens=500,
-        do_sample=False
+        do_sample=False,
     )
 
     # The prompt (user input / query)
@@ -71,9 +76,14 @@ def phi_chat(question: str) -> None:
     # ]
 
     messages = [
-        {"role": "system",
-         "content": "You are an advanced AI language model designed to improve the readability of text while preserving its meaning. Your goal is to rewrite the given input to make it clearer, more engaging, and more natural. Ensure that the tone is appropriate for the intended audience, sentence structures are fluid, and complex or awkward phrasing is simplified without losing key details"},
-        {"role": "user", "content": f"Here is the text that needs improvement: ${question}"},
+        {
+            "role": "system",
+            "content": "You are an advanced AI language model designed to improve the readability of text while preserving its meaning. Your goal is to rewrite the given input to make it clearer, more engaging, and more natural. Ensure that the tone is appropriate for the intended audience, sentence structures are fluid, and complex or awkward phrasing is simplified without losing key details",
+        },
+        {
+            "role": "user",
+            "content": f"Here is the text that needs improvement: ${question}",
+        },
     ]
 
     # Generate output
@@ -91,5 +101,5 @@ def main() -> None:
     phi_chat(question)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
