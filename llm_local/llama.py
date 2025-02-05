@@ -2,7 +2,7 @@ import torch
 import transformers
 
 
-def chat(question: str) -> None:
+def enhance_sentence(original_sentence: str) -> str:
     # https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct
     llm_model_name = "meta-llama/Meta-Llama-3.1-8B-Instruct"
 
@@ -11,28 +11,32 @@ def chat(question: str) -> None:
         model=llm_model_name,
         model_kwargs={"torch_dtype": torch.bfloat16},
         device_map="auto",
+        return_full_text=False,  # Don't return prompt but only output text
     )
 
     messages = [
         {
             "role": "system",
-            "content": "You are an advanced AI language model designed to improve the readability of text while preserving its meaning. Your goal is to rewrite the given input to make it clearer, more engaging, and more natural. Ensure that the tone is appropriate for the intended audience, sentence structures are fluid, and complex or awkward phrasing is simplified without losing key details",
+            "content": "You are an advanced AI language model designed to improve the readability of text while preserving its meaning. "
+            "Your goal is to rewrite the given input to make it clearer, more engaging, and more natural. "
+            "Ensure that the tone is appropriate for the intended audience, sentence structures are fluid, and complex or awkward phrasing is simplified without "
+            "losing key details. "
+            "Generate as an output only enhanced text nothing else.",
         },
         {
             "role": "user",
-            "content": f"Here is the text that needs improvement: ${question}",
+            "content": f"Here is the text that needs improvement: ${original_sentence}",
         },
     ]
-
-    # messages = [
-    #     {"role": "user", "content": f"Rewrite the following text to make it more human-readable, clear, and concise. Avoid jargon and complex sentences. Focus on making the message easy to understand for a general audience. Text: {question}"},
-    # ]
 
     outputs = generator(
         messages,
         max_new_tokens=256,
     )
-    print(f"LLama response: ========> {outputs[0]['generated_text'][-1]['content']}")
+
+    enhanced_sentence = outputs[0]["generated_text"]
+
+    return enhanced_sentence
 
 
 def classification(document: str) -> str:
