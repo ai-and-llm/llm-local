@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from huggingface_hub import login
 from llm_local import llama, phi
+from llm_local.chat import Chat
 
 
 def load_envs() -> None:
@@ -33,10 +34,19 @@ def enhance_sentence(sentence: str) -> None:
 def main() -> None:
     load_envs()
 
-    movie_review_sentiment_analysis(
-        "That was the most exciting horror movie that I've even seen."
-    )
+    # movie_review_sentiment_analysis(
+    #     "That was the most exciting horror movie that I've even seen."
+    # )
     # enhance_sentence("Questions to think through: do you need the request to complete in 5 sec or is it OK for the request to take some time?")
+
+    chat = Chat()
+
+    while True:
+        question = input("Your question: ")
+        if question == "exit":
+            break
+        answer = chat.ask_question(question)
+        print(f"Answer: {answer}")
 
 
 if __name__ == "__main__":
