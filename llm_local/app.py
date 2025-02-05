@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from huggingface_hub import login
 from llm_local import llama, phi
-from llm_local.chat import Chat
+from llm_local.chat import Chat, Phi, Llama
 
 
 def load_envs() -> None:
@@ -39,7 +39,7 @@ def main() -> None:
     # )
     # enhance_sentence("Questions to think through: do you need the request to complete in 5 sec or is it OK for the request to take some time?")
 
-    chat = Chat()
+    chat = Chat(Phi())
 
     while True:
         question = input("Your question: ")
