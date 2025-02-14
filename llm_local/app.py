@@ -2,7 +2,11 @@ import os
 
 from dotenv import load_dotenv
 from huggingface_hub import login
-from llm_local.chat import Chat, Llama
+from sentence_transformers import SentenceTransformer
+from torch import Tensor
+from transformers import AutoTokenizer, AutoModel
+
+from llm_local.chat import Chat, Llama, Phi
 
 
 def load_envs() -> None:
@@ -11,13 +15,10 @@ def load_envs() -> None:
     login(hugging_face_token)
 
 
-# chat = Chat(Phi())
-chat = Chat(Llama())
-
-
 def chat_conversation() -> None:
     print("Chat started")
 
+    chat = Chat(Phi())
     while True:
         question = input("Your question: ")
         if question == "exit":
@@ -28,6 +29,7 @@ def chat_conversation() -> None:
 
 def enhance_sentences() -> None:
     print("Make sentence more human readable")
+    chat = Chat(Llama())
 
     while True:
         sentence = input("Your sentence: ")
@@ -41,6 +43,7 @@ def enhance_sentences() -> None:
 def movie_review_sentiment_analysis() -> None:
     print("Do sentiment analysis for the movie review")
 
+    chat = Chat(Llama())
     while True:
         movie_review_feedback = input("Write movie review: ")
         if movie_review_feedback == "exit":
@@ -51,15 +54,41 @@ def movie_review_sentiment_analysis() -> None:
         print(f"SENTIMENT ANALYSIS: {review_result}")
 
 
+def separate_words_embedding() -> None:
+    tokenizer = AutoTokenizer.from_pretrained("microsoft/deberta-base")
+    model = AutoModel.from_pretrained("microsoft/deberta-base")
+    tokens = tokenizer("Hello world", return_tensors="pt")
+    for single_token in tokens["input_ids"][0]:
+        print(tokenizer.decode(single_token))
+    output = model(**tokens)[0]
+    print(f"Model output: {output}")
+
+
+def print_embedding(data: str) -> None:
+    embedding = generate_embedding(data)
+    # Vector embedding (768): [ 0.02435045  0.02414671 -0.01585776]...[ 0.04622588 -0.02984796 -0.01665087]
+    print(f"Vector embedding ({len(embedding)}): {embedding[:3]}...{embedding[-3:]}")
+
+
+def generate_embedding(data: str) -> Tensor:
+    """
+    Generates vector embedding from 'data'
+
+    """
+    model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
+    embedding = model.encode(data)
+
+    return embedding
+
+
+
 def main() -> None:
     load_envs()
 
     # chat_conversation()
-
     # enhance_sentences()
-
-    movie_review_sentiment_analysis()
-
+    # movie_review_sentiment_analysis()
+    print_embedding("Hello, world!!!")
 
 if __name__ == "__main__":
     main()

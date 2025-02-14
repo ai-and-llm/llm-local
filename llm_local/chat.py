@@ -105,7 +105,7 @@ class Chat:
 
     def classify_movie_review(self, movie_review: str) -> str:
         prompt_template = f"""
-        Predict whether the following document is a positive or negative movie review:
+        Predict whether the following feedback is a positive or negative movie review:
 
         ${movie_review}
 
