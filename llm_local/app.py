@@ -81,7 +81,6 @@ def generate_embedding(data: str) -> Tensor:
     return embedding
 
 
-
 def main() -> None:
     load_envs()
 
@@ -89,6 +88,7 @@ def main() -> None:
     # enhance_sentences()
     # movie_review_sentiment_analysis()
     print_embedding("Hello, world!!!")
+
 
 if __name__ == "__main__":
     main()
