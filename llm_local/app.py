@@ -82,7 +82,12 @@ def main() -> None:
     # print_embedding("Hello, world!!!")
 
     temp_finder = TemperatureFinderLLM()
-    response = temp_finder.find_temperature_at("Paris")
+
+    # response = temp_finder.find_temperature_at("Paris")
+    # response = temp_finder.find_temperature_at("Madrid")
+    response = temp_finder.find_temperature_at("San Francisco")
+
+
     print(response)
 
 

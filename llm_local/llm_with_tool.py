@@ -16,7 +16,17 @@ def get_current_temperature(location: str, unit: str) -> float:
         The current temperature at the specified location in the specified units, as a float.
     """
     print(f"get_current_temperature(\"{location}\", \"{unit}\") <--- CALLED")
-    return 22.3
+
+    if "Madrid" in location:
+        return 22.0
+
+    if "San Francisco" in location:
+        return 10.0
+
+    if "Paris" in location:
+        return 7.0
+
+    return 2.0
 
 class TemperatureFinderLLM:
 
@@ -50,8 +60,11 @@ class TemperatureFinderLLM:
                 unit_param = data_dict["parameters"]["unit"]
                 temperature = get_current_temperature(location_param, unit_param)
 
+                # print(f"location_param: {location_param}")
+                # print(f"unit_param: {unit_param}")
+
                 tool_call = {"name": "get_current_temperature",
-                             "arguments": {"location": "Paris, France", "unit": "celsius"}}
+                             "arguments": {"location": location_param, "unit": unit_param}}
                 messages.append({"role": "assistant", "tool_calls": [{"type": "function", "function": tool_call}]})
                 messages.append({"role": "tool", "name": "get_current_temperature", "content": str(temperature)})
 
@@ -62,7 +75,7 @@ class TemperatureFinderLLM:
                 out = model.generate(**inputs, max_new_tokens=128)
                 second_response = tokenizer.decode(out[0][len(inputs["input_ids"][0]):], skip_special_tokens=True)
 
-                print("Response(with tool))")
+                print("Response(with TOOL)")
                 return second_response
         except JSONDecodeError or TypeError:
             print("Response (no tool used)")
