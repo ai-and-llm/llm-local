@@ -2,11 +2,10 @@ import os
 
 from dotenv import load_dotenv
 from huggingface_hub import login
-from sentence_transformers import SentenceTransformer
-from torch import Tensor
 from transformers import AutoTokenizer, AutoModel
 
-from llm_local.chat import Chat, Llama, Phi
+from llm_local.embedding import EmbeddingModel
+from llm_local.llm import LLMInstance, Llama, Phi
 
 
 def load_envs() -> None:
@@ -18,24 +17,24 @@ def load_envs() -> None:
 def chat_conversation() -> None:
     print("Chat started")
 
-    chat = Chat(Phi())
+    llm = LLMInstance(Phi())
     while True:
         question = input("Your question: ")
         if question == "exit":
             break
-        answer = chat.ask_question(question)
+        answer = llm.ask_question(question)
         print(f"Answer: {answer}")
 
 
 def enhance_sentences() -> None:
     print("Make sentence more human readable")
-    chat = Chat(Llama())
+    llm = LLMInstance(Llama())
 
     while True:
         sentence = input("Your sentence: ")
         if sentence == "exit":
             break
-        enhanced_sentence = chat.enhance_sentence(sentence)
+        enhanced_sentence = llm.enhance_sentence(sentence)
         print(f"ORIGINAL: {sentence}")
         print(f"ENHANCED: {enhanced_sentence}")
 
@@ -43,13 +42,13 @@ def enhance_sentences() -> None:
 def movie_review_sentiment_analysis() -> None:
     print("Do sentiment analysis for the movie review")
 
-    chat = Chat(Llama())
+    llm = LLMInstance(Llama())
     while True:
         movie_review_feedback = input("Write movie review: ")
         if movie_review_feedback == "exit":
             break
 
-        review_result = chat.classify_movie_review(movie_review_feedback)
+        review_result = llm.classify_movie_review(movie_review_feedback)
 
         print(f"SENTIMENT ANALYSIS: {review_result}")
 
@@ -65,20 +64,9 @@ def separate_words_embedding() -> None:
 
 
 def print_embedding(data: str) -> None:
-    embedding = generate_embedding(data)
+    embedding = EmbeddingModel().generate_embedding(data)
     # Vector embedding (768): [ 0.02435045  0.02414671 -0.01585776]...[ 0.04622588 -0.02984796 -0.01665087]
     print(f"Vector embedding ({len(embedding)}): {embedding[:3]}...{embedding[-3:]}")
-
-
-def generate_embedding(data: str) -> Tensor:
-    """
-    Generates vector embedding from 'data'
-
-    """
-    model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
-    embedding = model.encode(data)
-
-    return embedding
 
 
 def main() -> None:
@@ -88,6 +76,21 @@ def main() -> None:
     # enhance_sentences()
     # movie_review_sentiment_analysis()
     print_embedding("Hello, world!!!")
+
+    # model = Llama()
+    # question = "Is java better than Rust?"
+    #
+    # prompt = [
+    #     {"role": "system", "content": "You are a helpful AI assistant. Generate answer to a question in no more than 300 characters or 3 sentences."},
+    #     {"role": "user", "content": f"{question}"},
+    # ]
+    #
+    # # Generate output
+    # output = model.llm_pipeline(prompt)
+    # answer = output[0]["generated_text"]
+    #
+    # print(question)
+    # print(answer)
 
 
 if __name__ == "__main__":
