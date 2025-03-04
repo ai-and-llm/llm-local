@@ -8,7 +8,7 @@ from llm_local.embedding import EmbeddingModel
 from llm_local.llm import LLMInstance, Llama, Phi
 
 
-def load_envs() -> None:
+def login_to_huggingface() -> None:
     load_dotenv()
     hugging_face_token = os.getenv("HUGGINGFACE_TOKEN")
     login(hugging_face_token)
@@ -70,27 +70,20 @@ def print_embedding(data: str) -> None:
 
 
 def main() -> None:
-    load_envs()
+    login_to_huggingface()
 
     # chat_conversation()
     # enhance_sentences()
     # movie_review_sentiment_analysis()
-    print_embedding("Hello, world!!!")
+    # print_embedding("Hello, world!!!")
 
-    # model = Llama()
-    # question = "Is java better than Rust?"
-    #
-    # prompt = [
-    #     {"role": "system", "content": "You are a helpful AI assistant. Generate answer to a question in no more than 300 characters or 3 sentences."},
-    #     {"role": "user", "content": f"{question}"},
-    # ]
-    #
-    # # Generate output
-    # output = model.llm_pipeline(prompt)
-    # answer = output[0]["generated_text"]
-    #
-    # print(question)
-    # print(answer)
+    question = "What is the difference between concurrency and parallelism?"
+
+    llm = LLMInstance(Llama())
+    answer = llm.ask_question(question)
+
+    print(question)
+    print(answer)
 
 
 if __name__ == "__main__":

@@ -51,6 +51,9 @@ class Llama(LLMModel):
         # https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct
         llm_model_name = "meta-llama/Meta-Llama-3.1-8B-Instruct"
 
+        print(f"Creating tokenizer for '{llm_model_name}'")
+        self.tokenizer = AutoTokenizer.from_pretrained(llm_model_name)
+
         print(f"Creating pipeline for '{llm_model_name}'")
 
         self.pipeline = pipeline(
@@ -58,6 +61,7 @@ class Llama(LLMModel):
             model=llm_model_name,
             model_kwargs={"torch_dtype": torch.bfloat16},
             device_map="auto",
+            tokenizer=self.tokenizer,
             max_new_tokens=500,
             return_full_text=False,  # Don't return prompt but only output text
         )
