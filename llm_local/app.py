@@ -1,11 +1,15 @@
+import json
 import os
+from json import JSONDecodeError
 
+import torch
 from dotenv import load_dotenv
 from huggingface_hub import login
-from transformers import AutoTokenizer, AutoModel
+from transformers import AutoTokenizer, AutoModel, pipeline, AutoModelForCausalLM
 
 from llm_local.embedding import EmbeddingModel
 from llm_local.llm import LLMInstance, Llama, Phi
+from llm_local.llm_with_tool import TemperatureFinderLLM
 
 
 def login_to_huggingface() -> None:
@@ -77,13 +81,9 @@ def main() -> None:
     # movie_review_sentiment_analysis()
     # print_embedding("Hello, world!!!")
 
-    question = "What is the difference between concurrency and parallelism?"
-
-    llm = LLMInstance(Llama())
-    answer = llm.ask_question(question)
-
-    print(question)
-    print(answer)
+    temp_finder = TemperatureFinderLLM()
+    response = temp_finder.find_temperature_at("Paris")
+    print(response)
 
 
 if __name__ == "__main__":
