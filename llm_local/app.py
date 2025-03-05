@@ -1,11 +1,7 @@
-import json
 import os
-from json import JSONDecodeError
-
-import torch
 from dotenv import load_dotenv
 from huggingface_hub import login
-from transformers import AutoTokenizer, AutoModel, pipeline, AutoModelForCausalLM
+from transformers import AutoTokenizer, AutoModel
 
 from llm_local.embedding import EmbeddingModel
 from llm_local.llm import LLMInstance, Llama, Phi
@@ -73,6 +69,12 @@ def print_embedding(data: str) -> None:
     print(f"Vector embedding ({len(embedding)}): {embedding[:3]}...{embedding[-3:]}")
 
 
+def print_temperature_for_location(city: str) -> None:
+    temp_finder = TemperatureFinderLLM()
+    response = temp_finder.find_temperature_at(city)
+    print(response)
+
+
 def main() -> None:
     login_to_huggingface()
 
@@ -81,14 +83,7 @@ def main() -> None:
     # movie_review_sentiment_analysis()
     # print_embedding("Hello, world!!!")
 
-    temp_finder = TemperatureFinderLLM()
-
-    # response = temp_finder.find_temperature_at("Paris")
-    # response = temp_finder.find_temperature_at("Madrid")
-    response = temp_finder.find_temperature_at("San Francisco")
-
-
-    print(response)
+    print_temperature_for_location("Madrid")  # "Paris", "Madrid", "San Francisco"
 
 
 if __name__ == "__main__":

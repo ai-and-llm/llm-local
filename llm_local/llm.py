@@ -129,4 +129,3 @@ class LLMInstance:
         review_label = outputs[0]["generated_text"].strip()
 
         return "POSITIVE" if review_label == "1" else "NEGATIVE"
-
