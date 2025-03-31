@@ -30,6 +30,10 @@ def get_current_temperature(location: str, unit: str) -> float:
 
 
 class TemperatureFinderLLM:
+    """
+    Use an agent to find the temperature at a specific location.
+    """
+
     # https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct
     LLM_MODEL_NAME = "meta-llama/Meta-Llama-3.1-8B-Instruct"
 
